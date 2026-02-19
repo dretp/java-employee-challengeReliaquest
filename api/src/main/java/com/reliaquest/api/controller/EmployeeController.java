@@ -1,28 +1,15 @@
 package com.reliaquest.api.controller;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.reliaquest.api.dto.ServerResponse;
 import com.reliaquest.api.model.EmployeeModel;
-import java.io.IOException;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
 import com.reliaquest.api.Interfaces.IEmployeeService;
 import com.reliaquest.api.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import java.util.UUID;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
+
 
 @RestController
 @RequestMapping("/employees")
