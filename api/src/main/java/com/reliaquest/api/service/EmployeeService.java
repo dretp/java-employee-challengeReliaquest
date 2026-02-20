@@ -62,8 +62,10 @@ public class EmployeeService implements IEmployeeService {
         try {
             String json = reliaQuestSvc().getForObject(BASE, String.class);
             if (json == null) return List.of();
+
             ServerResponse<List<EmployeeModel>> resp = mapper.readValue(json, new TypeReference<ServerResponse<List<EmployeeModel>>>() {
             });
+
             return resp.getData() == null ? List.of() : resp.getData();
         } catch (RestClientException | IOException e) {
             throw new RuntimeException("Failed to fetch employees", e);
@@ -87,13 +89,16 @@ public class EmployeeService implements IEmployeeService {
     public EmployeeModel getEmployeeById(String id) {
         try {
             String json = reliaQuestSvc().getForObject(BASE + "/" + id, String.class);
+
             if (json == null) throw new EmployeeNotFoundException("Employee not found: " + id);
+
             ServerResponse<EmployeeModel> resp = mapper.readValue(json, new TypeReference<ServerResponse<EmployeeModel>>() {
             });
             EmployeeModel emp = resp.getData();
             if (emp == null) throw new EmployeeNotFoundException("Employee not found: " + id);
             return emp;
-        } catch (RestClientException | IOException e) {
+        }
+        catch (RestClientException | IOException e) {
             throw new RuntimeException("Failed to fetch employee by id", e);
         }
     }
@@ -145,7 +150,8 @@ public class EmployeeService implements IEmployeeService {
             if (createdEmp == null) throw new EmployeeCreationException("Failed to create employee");
 
             return createdEmp.getId().toString();
-        } catch (RestClientException | IOException e) {
+        }
+        catch (RestClientException | IOException e) {
             throw new RuntimeException("Failed to create employee", e);
         }
     }
@@ -169,19 +175,26 @@ public class EmployeeService implements IEmployeeService {
             String delEmpById = reliaQuestSvc().execute(BASE + "/" + emp.getName(), org.springframework.http.HttpMethod.DELETE, null, clientHttpResponse -> {
                 return new String(clientHttpResponse.getBody().readAllBytes());
             });
+
             if (delEmpById == null) throw new RuntimeException("Failed to delete employee: " + emp.getName());
             ServerResponse<Boolean> delResp = mapper.readValue(delEmpById, new TypeReference<ServerResponse<Boolean>>() {
             });
+
             if (Boolean.TRUE.equals(delResp.getData())) return emp.getName();
+
             throw new RuntimeException("Failed to delete employee: " + emp.getName());
-        } catch (RestClientException | IOException e) {
+
+        }
+        catch (RestClientException | IOException e) {
             throw new RuntimeException("Failed to delete employee", e);
         }
     }
 
     private org.springframework.http.HttpHeaders createJsonHeaders() {
         org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
+
         headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
+
         return headers;
     }
 
